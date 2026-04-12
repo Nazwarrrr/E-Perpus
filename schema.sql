@@ -42,3 +42,9 @@ CREATE TABLE IF NOT EXISTS peminjaman (
   CONSTRAINT fk_pinjam_user FOREIGN KEY (id_user) REFERENCES users (id_user) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT fk_pinjam_buku FOREIGN KEY (id_buku) REFERENCES buku (id_buku) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- INSERT data user default
+INSERT IGNORE INTO users (username, password, role) VALUES 
+('admin', '$2y$10$h3Dd4fVTcXv8kV8Y.O7EZuZ6X7Y8Z9A0B1C2D3E4F5G6H7I8J9K0L', 'admin'),
+('siswa', '$2y$10$h3Dd4fVTcXv8kV8Y.O7EZuZ6X7Y8Z9A0B1C2D3E4F5G6H7I8J9K0L', 'siswa');
+
