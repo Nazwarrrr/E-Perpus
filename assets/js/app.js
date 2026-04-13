@@ -109,8 +109,11 @@
     function render(book) {
       var stok = parseInt(book.stok, 10) || 0;
       var statusLabel = stok > 0 ? 'Tersedia' : 'Habis';
-      var statusClass = stok > 0 ? 'status-tersedia' : 'status-habis';
       var cover = escapeHtml(book.cover_url || 'assets/img/default-book.svg');
+      function safeText(value) {
+        if (value === null || value === undefined || value === '') return '-';
+        return escapeHtml(String(value));
+      }
 
       var adminBlock = '';
       if (isAdmin) {
@@ -131,26 +134,26 @@
         cover +
         '" alt="">' +
         '<h2>' +
-        escapeHtml(book.judul) +
+        safeText(book.judul) +
         '</h2>' +
         '<p class="detail-meta">' +
-        escapeHtml(book.penulis) +
+        safeText(book.penulis) +
         '</p>' +
         '<dl class="detail-rows">' +
         '<div><dt>Penerbit</dt><dd>' +
-        escapeHtml(book.penerbit) +
+        safeText(book.penerbit) +
         '</dd></div>' +
         '<div><dt>Tahun terbit</dt><dd>' +
-        escapeHtml(String(book.tahun_terbit)) +
+        safeText(book.tahun_terbit) +
         '</dd></div>' +
         '<div><dt>Jumlah halaman</dt><dd>' +
-        escapeHtml(String(book.jumlah_halaman)) +
+        safeText(book.jumlah_halaman) +
         '</dd></div>' +
         '<div><dt>Rak</dt><dd>' +
-        escapeHtml(book.rak) +
+        safeText(book.rak) +
         '</dd></div>' +
         '<div><dt>Stok</dt><dd>' +
-        escapeHtml(String(book.stok)) +
+        safeText(book.stok) +
         '</dd></div>' +
         '<div><dt>Status</dt><dd><span class="book-card-status ' +
         (stok > 0 ? 'status-tersedia' : 'status-habis') +
@@ -159,7 +162,7 @@
         '</span></dd></div>' +
         '</dl>' +
         '<div class="detail-desc">' +
-        escapeHtml(book.deskripsi || '') +
+        safeText(book.deskripsi) +
         '</div>' +
         adminBlock;
     }

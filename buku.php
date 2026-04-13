@@ -2,7 +2,18 @@
 require_once __DIR__ . '/inc/bootstrap.php';
 requireLogin();
 
-$books = getBooks($conn);
+$perPage = 4;
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+if ($page < 1) {
+    $page = 1;
+}
+$totalBooks = countBooks($conn);
+$totalPages = max(1, (int) ceil($totalBooks / $perPage));
+if ($page > $totalPages) {
+    $page = $totalPages;
+}
+$offset = ($page - 1) * $perPage;
+$books = getBooks($conn, $perPage, $offset);
 $pageTitle = 'Katalog Buku';
 $activeNav = 'buku';
 $currentUser = getUserById($conn, (int) $_SESSION['id_user']);
@@ -61,6 +72,36 @@ require __DIR__ . '/inc/partials/head.php';
                                 </article>
                             <?php endforeach; ?>
                         </div>
+                        <div class="pagination-wrap">
+                            <p class="pagination-info">
+                                Menampilkan <?php echo count($books); ?> dari <?php echo $totalBooks; ?> buku (halaman <?php echo $page; ?> / <?php echo $totalPages; ?>)
+                            </p>
+                            <nav class="pagination" aria-label="Navigasi halaman buku">
+                                <?php
+                                $startPage = max(1, $page - 2);
+                                $endPage = min($totalPages, $page + 2);
+                                ?>
+                                <?php if ($page > 1): ?>
+                                    <a class="pagination-link" href="?page=<?php echo $page - 1; ?>">Sebelumnya</a>
+                                <?php else: ?>
+                                    <span class="pagination-link is-disabled">Sebelumnya</span>
+                                <?php endif; ?>
+
+                                <?php for ($i = $startPage; $i <= $endPage; $i++): ?>
+                                    <?php if ($i === $page): ?>
+                                        <span class="pagination-link is-active"><?php echo $i; ?></span>
+                                    <?php else: ?>
+                                        <a class="pagination-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                    <?php endif; ?>
+                                <?php endfor; ?>
+
+                                <?php if ($page < $totalPages): ?>
+                                    <a class="pagination-link" href="?page=<?php echo $page + 1; ?>">Berikutnya</a>
+                                <?php else: ?>
+                                    <span class="pagination-link is-disabled">Berikutnya</span>
+                                <?php endif; ?>
+                            </nav>
+                        </div>
                     <?php endif; ?>
                 </div>
 
@@ -82,6 +123,9 @@ document.addEventListener('DOMContentLoaded', function () {
   if (window.EPerpus) {
     EPerpus.initBookDetailPanel({ isAdmin: <?php echo $isAdmin ? 'true' : 'false'; ?>, apiUrl: 'api/book-detail.php' });
   }
+  setInterval(function () {
+    window.location.reload();
+  }, 5000);
 });
 </script>
 </body>

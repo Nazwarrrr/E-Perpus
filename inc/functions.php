@@ -80,10 +80,31 @@ function getUserById($conn, int $id): ?array
     return $row ?: null;
 }
 
-function getBooks($conn): array
+function getBooks($conn, ?int $limit = null, int $offset = 0): array
 {
-    $res = $conn->query('SELECT * FROM buku ORDER BY id_buku DESC');
-    return $res ? $res->fetch_all(MYSQLI_ASSOC) : [];
+    if ($limit === null) {
+        $res = $conn->query('SELECT * FROM buku ORDER BY id_buku DESC');
+        return $res ? $res->fetch_all(MYSQLI_ASSOC) : [];
+    }
+
+    if ($limit < 1) {
+        return [];
+    }
+
+    if ($offset < 0) {
+        $offset = 0;
+    }
+
+    $stmt = $conn->prepare('SELECT * FROM buku ORDER BY id_buku DESC LIMIT ? OFFSET ?');
+    $stmt->bind_param('ii', $limit, $offset);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+
+function countBooks($conn): int
+{
+    $row = $conn->query('SELECT COUNT(*) AS total FROM buku')->fetch_assoc();
+    return (int) ($row['total'] ?? 0);
 }
 
 function getBookById($conn, int $id): ?array
