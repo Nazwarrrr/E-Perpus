@@ -5,7 +5,7 @@ $admin = isAdmin();
 <aside class="sidebar">
     <div class="sidebar-header">
         <a href="<?php echo $admin ? 'dashboard-admin.php' : 'buku.php'; ?>" class="sidebar-logo">
-            <img src="assets/img/logo.svg" width="200" height="48" alt="E-Perpustakaan" class="logo-img">
+            <img src="assets/img/logo.png" width="200" height="48" alt="E-Perpustakaan" class="logo-img">
         </a>
     </div>
     <nav class="sidebar-nav" aria-label="Menu utama">

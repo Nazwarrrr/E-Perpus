@@ -68,13 +68,17 @@ a:hover {
 }
 
 .sidebar-header {
-  padding: 1.25rem 1rem;
+  padding: 1rem 0.75rem;
   border-bottom: 1px solid var(--border);
+  overflow: hidden;
 }
 
 .sidebar-logo {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--text);
+  overflow: hidden;
 }
 
 .sidebar-logo:hover {
@@ -83,10 +87,13 @@ a:hover {
 }
 
 .logo-img {
+  max-width: 160px;
+  max-height: 40px;
   width: 100%;
-  max-width: 100%;
   height: auto;
   display: block;
+  object-fit: contain;
+  overflow: hidden;
 }
 
 .sidebar-nav {
@@ -831,6 +838,26 @@ body.dark .login-card {
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
+.login-logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.login-logo {
+  max-width: 120px;
+  max-height: 80px;
+  height: auto;
+  width: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+body.dark .login-logo {
+  filter: brightness(0) invert(1);
+}
+
 .login-card h1 {
   margin: 0 0 0.35rem;
   font-size: 1.5rem;
@@ -890,6 +917,17 @@ body.dark .login-card {
     border-bottom: none;
     border-right: 1px solid var(--border);
     flex: 0 0 auto;
+    padding: 0.75rem 0.5rem;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .logo-img {
+    max-width: 120px;
+    max-height: 35px;
   }
 
   .sidebar-nav {

@@ -43,6 +43,9 @@ $pageTitle = 'Masuk — E-Perpustakaan';
 
     <div class="login-card-wrap">
         <div class="login-card">
+            <div class="login-logo-container">
+                <img src="assets/img/logo.png" alt="E-Perpustakaan Logo" class="login-logo">
+            </div>
             <h1>E-Perpustakaan</h1>
             <p class="sub">Masuk untuk melanjutkan</p>
 
