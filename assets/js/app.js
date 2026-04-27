@@ -57,22 +57,57 @@
   }
 
   function filterBookCards(input) {
-    if (!input || !input.dataset.bookSearch) return;
-    var q = input.value.trim().toLowerCase();
-    document.querySelectorAll('[data-book-card]').forEach(function (card) {
-      var title = (card.dataset.title || '').toLowerCase();
-      var author = (card.dataset.author || '').toLowerCase();
-      var match = !q || title.indexOf(q) !== -1 || author.indexOf(q) !== -1;
-      card.hidden = !match;
+    if (!input) return;
+    
+    var query = input.value.trim().toLowerCase();
+    var cards = document.querySelectorAll('[data-book-card]');
+    var visibleCount = 0;
+    
+    cards.forEach(function (card) {
+      var title = (card.getAttribute('data-title') || '').toLowerCase();
+      var author = (card.getAttribute('data-author') || '').toLowerCase();
+      
+      // Show if query is empty OR matches title or author
+      var isVisible = query === '' || title.includes(query) || author.includes(query);
+      
+      if (isVisible) {
+        card.style.display = '';  // Reset to default (grid item)
+        card.hidden = false;
+        visibleCount++;
+      } else {
+        card.style.display = 'none';  // Hide with display:none
+        card.hidden = true;
+      }
     });
+    
+    console.log('Filter: "' + query + '" → ' + visibleCount + '/' + cards.length + ' books visible');
   }
 
   function initBookSearch() {
     var input = document.querySelector('[data-book-search]');
-    if (!input) return;
+    if (!input) {
+      console.warn('Book search input not found');
+      return;
+    }
+    
+    // Real-time search on input event
     input.addEventListener('input', function () {
       filterBookCards(input);
     });
+    
+    // Also handle keyup for better compatibility
+    input.addEventListener('keyup', function () {
+      filterBookCards(input);
+    });
+    
+    // Handle paste events
+    input.addEventListener('paste', function () {
+      setTimeout(function () {
+        filterBookCards(input);
+      }, 0);
+    });
+    
+    console.log('Book search initialized');
   }
 
   window.EPerpus = window.EPerpus || {};

@@ -1,4 +1,4 @@
-<?php
+    <?php
 /**
  * Jalankan sekali dari browser untuk membuat akun demo (admin/siswa, password: password123).
  * Hapus file ini setelah digunakan di lingkungan produksi.

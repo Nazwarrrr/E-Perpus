@@ -2,18 +2,9 @@
 require_once __DIR__ . '/inc/bootstrap.php';
 requireLogin();
 
-$perPage = 4;
-$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-if ($page < 1) {
-    $page = 1;
-}
-$totalBooks = countBooks($conn);
-$totalPages = max(1, (int) ceil($totalBooks / $perPage));
-if ($page > $totalPages) {
-    $page = $totalPages;
-}
-$offset = ($page - 1) * $perPage;
-$books = getBooks($conn, $perPage, $offset);
+// Get ALL books without pagination
+$books = getBooks($conn);
+$totalBooks = count($books);
 $pageTitle = 'Katalog Buku';
 $activeNav = 'buku';
 $currentUser = getUserById($conn, (int) $_SESSION['id_user']);
@@ -72,36 +63,6 @@ require __DIR__ . '/inc/partials/head.php';
                                 </article>
                             <?php endforeach; ?>
                         </div>
-                        <div class="pagination-wrap">
-                            <p class="pagination-info">
-                                Menampilkan <?php echo count($books); ?> dari <?php echo $totalBooks; ?> buku (halaman <?php echo $page; ?> / <?php echo $totalPages; ?>)
-                            </p>
-                            <nav class="pagination" aria-label="Navigasi halaman buku">
-                                <?php
-                                $startPage = max(1, $page - 2);
-                                $endPage = min($totalPages, $page + 2);
-                                ?>
-                                <?php if ($page > 1): ?>
-                                    <a class="pagination-link" href="?page=<?php echo $page - 1; ?>">Sebelumnya</a>
-                                <?php else: ?>
-                                    <span class="pagination-link is-disabled">Sebelumnya</span>
-                                <?php endif; ?>
-
-                                <?php for ($i = $startPage; $i <= $endPage; $i++): ?>
-                                    <?php if ($i === $page): ?>
-                                        <span class="pagination-link is-active"><?php echo $i; ?></span>
-                                    <?php else: ?>
-                                        <a class="pagination-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                                    <?php endif; ?>
-                                <?php endfor; ?>
-
-                                <?php if ($page < $totalPages): ?>
-                                    <a class="pagination-link" href="?page=<?php echo $page + 1; ?>">Berikutnya</a>
-                                <?php else: ?>
-                                    <span class="pagination-link is-disabled">Berikutnya</span>
-                                <?php endif; ?>
-                            </nav>
-                        </div>
                     <?php endif; ?>
                 </div>
 
@@ -119,12 +80,62 @@ require __DIR__ . '/inc/partials/head.php';
 </div>
 <script src="assets/js/app.js"></script>
 <script>
+function initBookSearch() {
+  var searchInput = document.querySelector('#globalBookSearch');
+  var bookGrid = document.getElementById('bookGrid');
+  
+  if (!searchInput || !bookGrid) {
+    console.error('❌ Search not found');
+    return;
+  }
+  
+  console.log('✓ Search initialized with ' + bookGrid.querySelectorAll('[data-book-card]').length + ' books');
+  
+  function updateSearch() {
+    var query = searchInput.value.trim().toLowerCase();
+    var allCards = bookGrid.querySelectorAll('[data-book-card]');
+    var visibleCount = 0;
+    
+    allCards.forEach(function(card) {
+      var title = (card.getAttribute('data-title') || '').toLowerCase();
+      var author = (card.getAttribute('data-author') || '').toLowerCase();
+      var matches = title.indexOf(query) !== -1 || author.indexOf(query) !== -1;
+      
+      card.style.display = matches ? '' : 'none';
+      if (matches) visibleCount++;
+    });
+    
+    console.log('🔍 "' + query + '" → ' + visibleCount + ' results');
+  }
+  
+  searchInput.addEventListener('input', updateSearch);
+  searchInput.addEventListener('keyup', updateSearch);
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   if (window.EPerpus) {
     EPerpus.initBookDetailPanel({ isAdmin: <?php echo $isAdmin ? 'true' : 'false'; ?>, apiUrl: 'api/book-detail.php' });
   }
+  
+  initBookSearch();
+  
+  // Update status every 5 seconds
   setInterval(function () {
-    window.location.reload();
+    document.querySelectorAll('[data-book-card]:not([style*="display: none"])').forEach(function (card) {
+      var bookId = card.getAttribute('data-id');
+      if (!bookId) return;
+      
+      fetch('api/book-status.php?id=' + bookId, { credentials: 'same-origin' })
+        .then(r => r.json())
+        .then(data => {
+          if (data.error) return;
+          var badge = card.querySelector('.book-card-status');
+          if (badge) {
+            badge.textContent = data.status;
+            badge.className = 'book-card-status ' + data.statusClass;
+          }
+        });
+    });
   }, 5000);
 });
 </script>

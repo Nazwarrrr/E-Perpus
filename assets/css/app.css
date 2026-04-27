@@ -703,6 +703,15 @@ body.dark .stat-card:hover {
   outline-offset: 2px;
 }
 
+.book-card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.book-card[style*="display: none"] {
+  display: none !important;
+}
+
 .book-card[hidden] {
   display: none !important;
 }
