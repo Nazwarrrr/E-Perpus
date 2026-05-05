@@ -72,6 +72,8 @@ $pageTitle = 'Masuk — E-Perpustakaan';
       (function () {
         var KEY = 'eperpustakaan-theme';
         function apply(mode) {
+          document.documentElement.classList.remove('light', 'dark');
+          document.documentElement.classList.add(mode === 'dark' ? 'dark' : 'light');
           document.body.classList.remove('light', 'dark');
           document.body.classList.add(mode === 'dark' ? 'dark' : 'light');
         }

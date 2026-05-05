@@ -2,8 +2,11 @@
   var STORAGE_KEY = 'eperpustakaan-theme';
 
   function applyTheme(mode) {
+    var html = document.documentElement;
     var body = document.body;
-    if (!body) return;
+    if (!html || !body) return;
+    html.classList.remove('light', 'dark');
+    html.classList.add(mode === 'dark' ? 'dark' : 'light');
     body.classList.remove('light', 'dark');
     body.classList.add(mode === 'dark' ? 'dark' : 'light');
   }

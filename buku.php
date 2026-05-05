@@ -15,7 +15,14 @@ require __DIR__ . '/inc/partials/head.php';
 ?>
 <body class="light">
 <script>
-(function(){var t=localStorage.getItem('eperpustakaan-theme');document.body.classList.remove('light','dark');document.body.classList.add(t==='dark'?'dark':'light');})();
+(function(){
+    var t=localStorage.getItem('eperpustakaan-theme');
+    var isDark = t==='dark';
+    document.documentElement.classList.remove('light','dark');
+    document.documentElement.classList.add(isDark?'dark':'light');
+    document.body.classList.remove('light','dark');
+    document.body.classList.add(isDark?'dark':'light');
+})();
 </script>
 <div class="app">
     <?php require __DIR__ . '/inc/partials/sidebar.php'; ?>

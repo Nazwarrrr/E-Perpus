@@ -281,3 +281,66 @@ function profilePhotoUrl(?string $filename): string
     }
     return 'assets/img/default-avatar.svg';
 }
+
+// Update user biodata
+function updateUserBiodata($conn, int $id_user, string $email, string $no_hp, string $alamat, string $tanggal_lahir): bool
+{
+    $stmt = $conn->prepare('UPDATE users SET email = ?, no_hp = ?, alamat = ?, tanggal_lahir = ? WHERE id_user = ?');
+    if (!$stmt) {
+        return false;
+    }
+    $stmt->bind_param('ssssi', $email, $no_hp, $alamat, $tanggal_lahir, $id_user);
+    return $stmt->execute();
+}
+
+// Add book to favorites
+function addToFavorites($conn, int $id_user, int $id_buku): bool
+{
+    $stmt = $conn->prepare('INSERT INTO favorit_buku (id_user, id_buku) VALUES (?, ?) ON DUPLICATE KEY UPDATE created_at = NOW()');
+    if (!$stmt) {
+        return false;
+    }
+    $stmt->bind_param('ii', $id_user, $id_buku);
+    return $stmt->execute();
+}
+
+// Remove book from favorites
+function removeFromFavorites($conn, int $id_user, int $id_buku): bool
+{
+    $stmt = $conn->prepare('DELETE FROM favorit_buku WHERE id_user = ? AND id_buku = ?');
+    if (!$stmt) {
+        return false;
+    }
+    $stmt->bind_param('ii', $id_user, $id_buku);
+    return $stmt->execute();
+}
+
+// Get all favorite books for user
+function getFavoriteBooks($conn, int $id_user): array
+{
+    $stmt = $conn->prepare('
+        SELECT b.id_buku, b.judul, b.penulis, b.foto, f.created_at
+        FROM favorit_buku f
+        JOIN buku b ON f.id_buku = b.id_buku
+        WHERE f.id_user = ?
+        ORDER BY f.created_at DESC
+    ');
+    if (!$stmt) {
+        return [];
+    }
+    $stmt->bind_param('i', $id_user);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC) ?? [];
+}
+
+// Check if book is favorite
+function isFavorite($conn, int $id_user, int $id_buku): bool
+{
+    $stmt = $conn->prepare('SELECT id_favorit FROM favorit_buku WHERE id_user = ? AND id_buku = ?');
+    if (!$stmt) {
+        return false;
+    }
+    $stmt->bind_param('ii', $id_user, $id_buku);
+    $stmt->execute();
+    return $stmt->get_result()->num_rows > 0;
+}

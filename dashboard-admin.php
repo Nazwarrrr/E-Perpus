@@ -24,7 +24,14 @@ require __DIR__ . '/inc/partials/head.php';
 ?>
 <body class="light">
 <script>
-(function(){var t=localStorage.getItem('eperpustakaan-theme');document.body.classList.remove('light','dark');document.body.classList.add(t==='dark'?'dark':'light');})();
+(function(){
+    var t=localStorage.getItem('eperpustakaan-theme');
+    var isDark = t==='dark';
+    document.documentElement.classList.remove('light','dark');
+    document.documentElement.classList.add(isDark?'dark':'light');
+    document.body.classList.remove('light','dark');
+    document.body.classList.add(isDark?'dark':'light');
+})();
 </script>
 <div class="app">
     <?php require __DIR__ . '/inc/partials/sidebar.php'; ?>
@@ -55,7 +62,7 @@ require __DIR__ . '/inc/partials/head.php';
                     <p class="admin-summary-label">Buku Dipinjam</p>
                     <p class="admin-summary-value"><?php echo (int) $stats['dipinjam']; ?></p>
                 </a>
-                <a class="admin-summary-card" href="riwayat.php" title="Lihat data siswa">
+                <a class="admin-summary-card" href="peminjaman.php" title="Lihat peminjaman">
                     <div class="admin-summary-icon" aria-hidden="true"></div>
                     <p class="admin-summary-label">Total Siswa</p>
                     <p class="admin-summary-value"><?php echo (int) $stats['total_user']; ?></p>
@@ -120,7 +127,7 @@ require __DIR__ . '/inc/partials/head.php';
                             $activityTime = $isBorrowed ? ($activity['tanggal_pinjam'] ?? null) : ($activity['tanggal_kembali'] ?? null);
                             $timeText = $activityTime ? date('d M Y H:i', strtotime((string) $activityTime)) : '-';
                             ?>
-                            <a class="admin-activity-item" href="riwayat.php" title="Lihat detail riwayat">
+                            <a class="admin-activity-item" href="peminjaman.php" title="Lihat detail peminjaman">
                                 <div class="admin-activity-main">
                                     <p class="admin-activity-user"><?php echo htmlspecialchars($activity['username'] ?? '-'); ?></p>
                                     <p class="admin-activity-book"><?php echo htmlspecialchars($activity['judul'] ?? '-'); ?></p>
