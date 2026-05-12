@@ -48,22 +48,22 @@ require __DIR__ . '/inc/partials/head.php';
             </div>
             <div class="admin-summary-grid">
                 <a class="admin-summary-card" href="buku.php" title="Lihat semua buku">
-                    <div class="admin-summary-icon" aria-hidden="true"></div>
+                    <i class="fas fa-book admin-summary-icon"></i>
                     <p class="admin-summary-label">Total Buku</p>
                     <p class="admin-summary-value"><?php echo (int) $stats['total_buku']; ?></p>
                 </a>
                 <a class="admin-summary-card" href="buku.php" title="Lihat stok buku tersedia">
-                    <div class="admin-summary-icon" aria-hidden="true"></div>
+                    <i class="fas fa-check-circle admin-summary-icon"></i>
                     <p class="admin-summary-label">Buku Tersedia</p>
                     <p class="admin-summary-value"><?php echo (int) $stats['tersedia']; ?></p>
                 </a>
                 <a class="admin-summary-card" href="peminjaman.php" title="Lihat buku dipinjam">
-                    <div class="admin-summary-icon" aria-hidden="true"></div>
+                    <i class="fas fa-share admin-summary-icon"></i>
                     <p class="admin-summary-label">Buku Dipinjam</p>
                     <p class="admin-summary-value"><?php echo (int) $stats['dipinjam']; ?></p>
                 </a>
                 <a class="admin-summary-card" href="peminjaman.php" title="Lihat peminjaman">
-                    <div class="admin-summary-icon" aria-hidden="true"></div>
+                    <i class="fas fa-users admin-summary-icon"></i>
                     <p class="admin-summary-label">Total Siswa</p>
                     <p class="admin-summary-value"><?php echo (int) $stats['total_user']; ?></p>
                 </a>
@@ -71,7 +71,7 @@ require __DIR__ . '/inc/partials/head.php';
             <section class="admin-insight-grid">
                 <article class="card admin-chart-card">
                     <div class="admin-section-head">
-                        <h2>Statistik Peminjaman</h2>
+                        <h2><i class="fas fa-chart-line"></i> Statistik Peminjaman</h2>
                         <p>Data dummy acak (sementara)</p>
                     </div>
                     <div class="admin-chart-toolbar">
@@ -84,7 +84,7 @@ require __DIR__ . '/inc/partials/head.php';
 
                 <article class="card admin-recommend-card">
                     <div class="admin-section-head">
-                        <h2>Rekomendasi Buku</h2>
+                        <h2><i class="fas fa-star"></i> Rekomendasi Buku</h2>
                         <p>Diambil dari koleksi terbaru</p>
                     </div>
                     <div class="admin-recommend-list">
@@ -112,7 +112,7 @@ require __DIR__ . '/inc/partials/head.php';
 
             <section class="card admin-activity-card">
                 <div class="admin-section-head">
-                    <h2>Aktivitas Terbaru</h2>
+                    <h2><i class="fas fa-clock"></i> Aktivitas Terbaru</h2>
                     <p>Maksimal 6 aktivitas terbaru</p>
                 </div>
                 <?php if (count($recentActivities) === 0): ?>

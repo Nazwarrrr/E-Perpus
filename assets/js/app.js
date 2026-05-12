@@ -159,12 +159,12 @@
           '<div class="admin-actions">' +
           '<a class="btn btn-primary" href="buku-form.php?id=' +
           encodeURIComponent(book.id_buku) +
-          '">Edit</a>' +
+          '"><i class="fas fa-pencil"></i> Edit</a>' +
           '<form method="post" action="buku-hapus.php" style="display:inline" onsubmit="return confirm(\'Hapus buku ini?\');">' +
           '<input type="hidden" name="id_buku" value="' +
           escapeHtml(String(book.id_buku)) +
           '">' +
-          '<button type="submit" class="btn btn-danger">Hapus</button></form></div>';
+          '<button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Hapus</button></form></div>';
       }
 
       panelBody.innerHTML =

@@ -181,7 +181,7 @@ require __DIR__ . '/inc/partials/head.php';
         <div class="content">
             <div class="toolbar">
                 <h1 class="page-title" style="margin:0"><?php echo htmlspecialchars($pageTitle); ?></h1>
-                <a href="buku.php" class="btn btn-ghost">Kembali ke katalog</a>
+                <a href="buku.php" class="btn btn-ghost"><i class="fas fa-arrow-left"></i> Kembali ke katalog</a>
             </div>
 
             <?php foreach ($errors as $e): ?>
@@ -241,7 +241,7 @@ require __DIR__ . '/inc/partials/head.php';
                         <label for="deskripsi">Deskripsi</label>
                         <textarea name="deskripsi" id="deskripsi" required><?php echo htmlspecialchars($fields['deskripsi']); ?></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary"><?php echo $edit ? 'Simpan perubahan' : 'Simpan buku'; ?></button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> <?php echo $edit ? 'Simpan perubahan' : 'Simpan buku'; ?></button>
                 </form>
             </div>
         </div>

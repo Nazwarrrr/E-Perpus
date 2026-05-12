@@ -11,26 +11,26 @@ $admin = isAdmin();
     <nav class="sidebar-nav" aria-label="Menu utama">
         <?php if ($admin): ?>
             <a href="dashboard-admin.php" class="nav-link<?php echo $active === 'dashboard' ? ' is-active' : ''; ?>">
-                <span class="nav-ic" aria-hidden="true"></span><span>Dashboard</span>
+                <i class="fas fa-chart-line nav-icon"></i><span>Dashboard</span>
             </a>
             <a href="buku.php" class="nav-link<?php echo $active === 'buku' ? ' is-active' : ''; ?>">
-                <span class="nav-ic nav-ic--book" aria-hidden="true"></span><span>Buku</span>
+                <i class="fas fa-book nav-icon"></i><span>Buku</span>
             </a>
             <a href="peminjaman.php" class="nav-link<?php echo $active === 'peminjaman' ? ' is-active' : ''; ?>">
-                <span class="nav-ic nav-ic--loan" aria-hidden="true"></span><span>Peminjaman</span>
+                <i class="fas fa-handshake nav-icon"></i><span>Peminjaman</span>
             </a>
         <?php else: ?>
             <a href="buku.php" class="nav-link<?php echo $active === 'buku' ? ' is-active' : ''; ?>">
-                <span class="nav-ic nav-ic--book" aria-hidden="true"></span><span>Buku</span>
+                <i class="fas fa-book nav-icon"></i><span>Buku</span>
             </a>
         <?php endif; ?>
         <a href="profil.php" class="nav-link<?php echo $active === 'profil' ? ' is-active' : ''; ?>">
-            <span class="nav-ic nav-ic--user" aria-hidden="true"></span><span>Profil</span>
+            <i class="fas fa-user nav-icon"></i><span>Profil</span>
         </a>
     </nav>
     <div class="sidebar-footer">
         <a href="logout.php" class="nav-link nav-link--logout">
-            <span class="nav-ic nav-ic--out" aria-hidden="true"></span><span>Logout</span>
+            <i class="fas fa-sign-out-alt nav-icon"></i><span>Logout</span>
         </a>
     </div>
 </aside>

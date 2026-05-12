@@ -30,9 +30,9 @@ require __DIR__ . '/inc/partials/head.php';
         <?php require __DIR__ . '/inc/partials/topbar.php'; ?>
         <div class="content">
             <div class="toolbar">
-                <h1 class="page-title" style="margin:0;flex:1">Buku</h1>
+                <h1 class="page-title" style="margin:0;flex:1"><i class="fas fa-book"></i> Buku</h1>
                 <?php if ($isAdmin): ?>
-                    <a href="buku-form.php" class="btn btn-primary">Tambah buku</a>
+                    <a href="buku-form.php" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah buku</a>
                 <?php endif; ?>
             </div>
 
