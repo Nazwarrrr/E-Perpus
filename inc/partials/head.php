@@ -9,6 +9,8 @@ $pageTitle = $pageTitle ?? 'E-Perpustakaan';
     <title><?php echo htmlspecialchars($pageTitle); ?></title>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- ApexCharts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.45.0/apexcharts.min.js"></script>
     <link rel="stylesheet" href="assets/css/app.css">
     <script>
     (function(){

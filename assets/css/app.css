@@ -112,21 +112,26 @@ a:hover {
   gap: 0.65rem;
   padding: 0.65rem 0.85rem;
   border-radius: 12px;
-  color: var(--text);
+  color: var(--text-muted);
   font-weight: 500;
   font-size: 0.9375rem;
-  transition: background 0.15s, color 0.15s;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+  position: relative;
 }
 
 .nav-link:hover {
   text-decoration: none;
-  background: rgba(79, 140, 255, 0.1);
+  background: rgba(59, 130, 246, 0.12);
   color: var(--primary);
+  border-left-color: var(--primary);
 }
 
 .nav-link.is-active {
-  background: rgba(79, 140, 255, 0.18);
+  background: rgba(59, 130, 246, 0.18);
   color: var(--primary);
+  border-left-color: #3B82F6;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
 }
 
 .nav-link--logout {
@@ -161,13 +166,13 @@ a:hover {
   justify-content: center;
   flex-shrink: 0;
   font-size: 18px;
-  color: var(--primary);
+  color: var(--text-muted);
   transition: color 0.2s ease;
 }
 
 .nav-link:hover .nav-icon,
 .nav-link.is-active .nav-icon {
-  color: var(--primary-hover);
+  color: var(--primary);
 }
 
 .nav-link.nav-link--logout:hover .nav-icon,
@@ -513,13 +518,16 @@ body.dark .theme-toggle::before {
   font-size: 0.82rem;
 }
 
-.admin-chart-card canvas {
+.admin-chart-card #adminBorrowChart {
   width: 100%;
   height: 300px;
   display: block;
-  background: linear-gradient(180deg, rgba(59, 130, 246, 0.06) 0%, rgba(59, 130, 246, 0) 100%);
+}
+
+.admin-chart-card .apexcharts-canvas {
   border: 1px solid var(--border);
   border-radius: 14px;
+  background: linear-gradient(180deg, rgba(59, 130, 246, 0.06) 0%, rgba(59, 130, 246, 0) 100%);
 }
 
 .admin-chart-toolbar {
@@ -541,9 +549,9 @@ body.dark .theme-toggle::before {
 }
 
 .chart-filter-btn.is-active {
-  background: rgba(37, 99, 235, 0.14);
-  border-color: rgba(37, 99, 235, 0.45);
-  color: #1d4ed8;
+  background: rgba(59, 130, 246, 0.15);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .admin-recommend-list {
@@ -566,8 +574,8 @@ body.dark .theme-toggle::before {
 
 .admin-recommend-item:hover {
   text-decoration: none;
-  background: rgba(37, 99, 235, 0.06);
-  border-color: rgba(37, 99, 235, 0.4);
+  background: rgba(59, 130, 246, 0.06);
+  border-color: var(--primary);
   transform: translateX(2px);
 }
 
@@ -873,6 +881,11 @@ body.dark .stat-card:hover {
   min-height: 280px;
   max-height: calc(100vh - 7rem);
   overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.detail-panel-inner::-webkit-scrollbar {
+  display: none;
 }
 
 .panel-close-m {
@@ -931,7 +944,12 @@ body.dark .stat-card:hover {
   word-break: break-word;
   max-height: 240px;
   overflow-y: auto;
+  scrollbar-width: none;
   padding-right: 0.25rem;
+}
+
+.detail-desc::-webkit-scrollbar {
+  display: none;
 }
 
 .admin-actions {
@@ -946,14 +964,14 @@ body.dark .stat-card:hover {
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
-  padding: 0.55rem 1rem;
+  padding: 0.65rem 1.2rem;
   border-radius: 12px;
-  font-weight: 600;
-  font-size: 0.875rem;
+  font-weight: 700;
+  font-size: 0.9rem;
   border: none;
   cursor: pointer;
   font-family: inherit;
-  transition: background 0.15s, transform 0.15s;
+  transition: all 0.2s ease;
 }
 
 .btn i {
@@ -961,16 +979,18 @@ body.dark .stat-card:hover {
 }
 
 .btn:hover {
-  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .btn-primary {
   background: var(--primary);
   color: #fff;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
 }
 
 .btn-primary:hover {
   background: var(--primary-hover);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
 }
 
 .btn-ghost {
@@ -982,10 +1002,12 @@ body.dark .stat-card:hover {
 .btn-danger {
   background: #ef4444;
   color: #fff;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
 }
 
 .btn-danger:hover {
   background: #dc2626;
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
 }
 
 .toolbar {
@@ -1293,8 +1315,21 @@ body.light .profile-card-header {
 
 .profile-section-title-action {
   margin-left: auto;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  background: rgba(59, 130, 246, 0.12);
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.profile-section-title-action:hover {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
 }
 
 /* Biodata Section */
@@ -1417,23 +1452,19 @@ body.light .form-input {
 .btn-submit {
   width: 100%;
   padding: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 1rem;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   border: none;
   border-radius: 10px;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: white;
   cursor: pointer;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
 }
 
 .btn-submit:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(59, 130, 246, 0.35) !important;
-}
-
-.btn-submit:active {
-  transform: translateY(0);
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
 }
 
 /* Favorites Section */
@@ -1457,9 +1488,9 @@ body.light .profile-favorites {
 }
 
 .btn-add-fav {
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.2rem;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 700;
   border: none;
   border-radius: 8px;
   background: var(--secondary);
@@ -1469,11 +1500,12 @@ body.light .profile-favorites {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
 .btn-add-fav:hover {
   background: #7c3aed;
-  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
 }
 
 .favorites-list {
@@ -1564,29 +1596,31 @@ body.light .favorite-item {
 }
 
 .btn-icon-fav {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   background: rgba(59, 130, 246, 0.15);
   color: var(--primary);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 1.05rem;
   transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
 }
 
 .btn-icon-fav:hover {
   background: var(--primary);
   color: white;
-  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
 }
 
 .btn-icon-fav.btn-delete:hover {
   background: #ef4444;
   color: white;
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.35);
 }
 
 .empty-favorites {

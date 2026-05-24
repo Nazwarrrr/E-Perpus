@@ -79,7 +79,7 @@ require __DIR__ . '/inc/partials/head.php';
                         <button type="button" class="chart-filter-btn" data-days="14">14 Hari</button>
                         <button type="button" class="chart-filter-btn" data-days="30">30 Hari</button>
                     </div>
-                    <canvas id="adminBorrowChart" width="960" height="300"></canvas>
+                    <div id="adminBorrowChart"></div>
                 </article>
 
                 <article class="card admin-recommend-card">
@@ -147,12 +147,22 @@ require __DIR__ . '/inc/partials/head.php';
 <script src="assets/js/app.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  var canvas = document.getElementById('adminBorrowChart');
-  if (!canvas) return;
-  var ctx = canvas.getContext('2d');
-  if (!ctx) return;
+  var chartContainer = document.getElementById('adminBorrowChart');
+  if (!chartContainer) return;
   var buttons = Array.prototype.slice.call(document.querySelectorAll('.chart-filter-btn'));
   var refreshBtn = document.getElementById('refreshDashboardBtn');
+  var chart = null;
+
+  function getChartColors() {
+    var isDark = document.documentElement.classList.contains('dark');
+    return {
+      primary: isDark ? '#3B82F6' : '#3B82F6',
+      text: isDark ? '#f8fafc' : '#0f172a',
+      textMuted: isDark ? '#94a3b8' : '#64748b',
+      border: isDark ? '#1e293b' : '#e2e8f0',
+      grid: isDark ? '#1e293b' : '#f1f5f9'
+    };
+  }
 
   function buildLabels(days) {
     var labels = [];
@@ -173,49 +183,104 @@ document.addEventListener('DOMContentLoaded', function () {
   function renderChart(days) {
     var labels = buildLabels(days);
     var values = buildValues(days);
-    var width = canvas.width;
-    var height = canvas.height;
-    var pad = { top: 24, right: 20, bottom: 34, left: 34 };
-    var chartW = width - pad.left - pad.right;
-    var chartH = height - pad.top - pad.bottom;
-    var maxVal = Math.max.apply(null, values) || 1;
-    var step = chartW / values.length;
+    var colors = getChartColors();
 
-    ctx.clearRect(0, 0, width, height);
-    ctx.strokeStyle = '#cbd5e1';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(pad.left, pad.top + chartH);
-    ctx.lineTo(pad.left + chartW, pad.top + chartH);
-    ctx.stroke();
+    var options = {
+      chart: {
+        type: 'area',
+        height: 300,
+        sparkline: { enabled: false },
+        toolbar: { show: false },
+        background: 'transparent',
+        fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif'
+      },
+      series: [{
+        name: 'Peminjaman',
+        data: values
+      }],
+      xaxis: {
+        categories: labels,
+        labels: {
+          style: {
+            colors: colors.textMuted,
+            fontSize: '12px',
+            fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif'
+          }
+        },
+        axisBorder: { show: false },
+        axisTicks: { show: false }
+      },
+      yaxis: {
+        labels: {
+          style: {
+            colors: colors.textMuted,
+            fontSize: '12px',
+            fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif'
+          }
+        }
+      },
+      colors: [colors.primary],
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.25,
+          opacityTo: 0.05,
+          stops: [0, 100],
+          colorStops: [
+            {
+              offset: 0,
+              color: colors.primary,
+              opacity: 0.25
+            },
+            {
+              offset: 100,
+              color: colors.primary,
+              opacity: 0
+            }
+          ]
+        }
+      },
+      stroke: {
+        curve: 'smooth',
+        width: 3,
+        colors: [colors.primary]
+      },
+      tooltip: {
+        enabled: true,
+        theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light',
+        style: {
+          fontSize: '12px',
+          fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, sans-serif'
+        },
+        x: {
+          format: 'dd MMM'
+        }
+      },
+      grid: {
+        show: true,
+        borderColor: colors.border,
+        strokeDashArray: 3,
+        xaxis: { lines: { show: false } },
+        yaxis: { lines: { show: true } },
+        padding: { top: 0, right: 0, bottom: 0, left: 0 }
+      },
+      dataLabels: { enabled: false },
+      markers: {
+        size: 4,
+        colors: [colors.primary],
+        strokeColors: [colors.primary],
+        strokeWidth: 2,
+        hover: { size: 6 }
+      }
+    };
 
-    ctx.beginPath();
-    ctx.strokeStyle = '#2563eb';
-    ctx.fillStyle = 'rgba(37, 99, 235, 0.14)';
-    ctx.lineWidth = 3;
-
-    values.forEach(function (val, i) {
-      var x = pad.left + i * step + step / 2;
-      var y = pad.top + chartH - (val / maxVal) * chartH;
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    });
-    ctx.stroke();
-
-    ctx.lineTo(pad.left + (values.length - 1) * step + step / 2, pad.top + chartH);
-    ctx.lineTo(pad.left + step / 2, pad.top + chartH);
-    ctx.closePath();
-    ctx.fill();
-
-    ctx.fillStyle = '#64748b';
-    ctx.font = '12px Segoe UI, sans-serif';
-    var labelStep = days > 14 ? 3 : 1;
-    labels.forEach(function (label, i) {
-      if (i % labelStep !== 0 && i !== labels.length - 1) return;
-      var x = pad.left + i * step + step / 2;
-      ctx.textAlign = 'center';
-      ctx.fillText(label, x, pad.top + chartH + 19);
-    });
+    if (chart) {
+      chart.updateOptions(options);
+    } else {
+      chart = new ApexCharts(chartContainer, options);
+      chart.render();
+    }
   }
 
   buttons.forEach(function (btn) {

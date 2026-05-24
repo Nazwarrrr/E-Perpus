@@ -276,7 +276,7 @@ require __DIR__ . '/inc/partials/head.php';
                                             </div>
                                         </div>
                                         <div class="favorite-actions">
-                                            <button type="button" class="btn-icon-fav" title="Hapus dari favorit" onclick="removeFavorite(<?php echo $book['id_buku']; ?>">Hapus</button>
+                                            <button type="button" class="btn-icon-fav" title="Hapus dari favorit" onclick="removeFavorite(<?php echo $book['id_buku']; ?>)"><i class="fas fa-trash"></i></button>
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
@@ -288,25 +288,7 @@ require __DIR__ . '/inc/partials/head.php';
                         <?php endif; ?>
                     </div>
 
-                    <!-- Quick Stats -->
-                    <div class="card profile-stats">
-                        <h3 class="profile-section-title">Statistik</h3>
-                        <?php
-                            $borrowCount = (int) $conn->query("SELECT COUNT(*) as cnt FROM peminjaman WHERE id_user = $uid")->fetch_assoc()['cnt'];
-                            $activeCount = (int) $conn->query("SELECT COUNT(*) as cnt FROM peminjaman WHERE id_user = $uid AND status = 'dipinjam'")->fetch_assoc()['cnt'];
-                            $favCount = count($favBooks);
-                        ?>
-                        <div class="stats-grid">
-                            <div class="stat-item">
-                                <p class="stat-value"><?php echo $borrowCount; ?></p>
-                                <p class="stat-label">Total Peminjaman</p>
-                            </div>
-                            <div class="stat-item">
-                                <p class="stat-value"><?php echo $activeCount; ?></p>
-                                <p class="stat-label">Sedang Dipinjam</p>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -669,3 +651,6 @@ document.addEventListener('click', function(event) {
     if (event.target === favModal) closeAddFavoritesModal();
 });
 </script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
